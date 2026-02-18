@@ -61,7 +61,13 @@ export function Hero() {
         </motion.div>
 
         <div className="mt-8 flex flex-wrap justify-center gap-3 text-xs font-semibold text-slate-400 uppercase tracking-widest">
-          <span>Try: &quot;A linen suit for a summer wedding in Tuscany&quot;</span>
+          <span>Try: </span>
+          <button
+            onClick={() => { setQuery("A linen suit for a summer wedding in Tuscany"); }}
+            className="hover:text-primary transition-colors underline decoration-dotted"
+          >
+            &quot;A linen suit for a summer wedding in Tuscany&quot;
+          </button>
         </div>
       </div>
     </section>

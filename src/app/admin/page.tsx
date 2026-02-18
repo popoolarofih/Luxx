@@ -1,6 +1,19 @@
+'use client';
+
 import { LayoutDashboard, TrendingUp, Package, Settings, Search, Bell, Sparkles, Brain } from 'lucide-react';
+import { useState } from 'react';
 
 export default function AdminDashboard() {
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const handleGenerateReport = () => {
+    setIsGenerating(true);
+    setTimeout(() => {
+      setIsGenerating(false);
+      alert('AI Report Generated and sent to your email.');
+    }, 1500);
+  };
+
   return (
     <div className="bg-background-light dark:bg-background-dark min-h-screen flex overflow-hidden">
       {/* Sidebar Navigation */}
@@ -53,9 +66,13 @@ export default function AdminDashboard() {
             <button className="size-10 flex items-center justify-center bg-white border border-slate-200 rounded-full text-slate-600 hover:border-primary hover:text-primary transition-all">
               <Bell className="size-5" />
             </button>
-            <button className="bg-primary text-white px-6 py-2.5 rounded-full text-sm font-bold tracking-wide hover:shadow-lg hover:shadow-primary/30 transition-all flex items-center gap-2">
+            <button
+              onClick={handleGenerateReport}
+              disabled={isGenerating}
+              className="bg-primary text-white px-6 py-2.5 rounded-full text-sm font-bold tracking-wide hover:shadow-lg hover:shadow-primary/30 transition-all flex items-center gap-2 disabled:opacity-50"
+            >
               <Sparkles className="size-4" />
-              Generate Report
+              {isGenerating ? 'Generating...' : 'Generate Report'}
             </button>
           </div>
         </header>

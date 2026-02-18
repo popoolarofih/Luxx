@@ -1,6 +1,11 @@
-import { Star, CheckCircle } from 'lucide-react';
+'use client';
+
+import { Star, CheckCircle, Heart } from 'lucide-react';
+import { useStore } from '@/context/StoreContext';
 
 export function ProductInfo({ product }: { product: any }) {
+  const { addToCart, toggleWishlist, wishlist } = useStore();
+
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
@@ -16,9 +21,18 @@ export function ProductInfo({ product }: { product: any }) {
         In stock, ready to ship
       </p>
 
-      <div className="pt-6">
-        <button className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-14 rounded-full shadow-lg shadow-primary/25 transition-all active:scale-95 flex items-center justify-center gap-2">
+      <div className="pt-6 flex gap-4">
+        <button
+          onClick={() => addToCart(product)}
+          className="flex-1 bg-primary hover:bg-primary/90 text-white font-bold h-14 rounded-full shadow-lg shadow-primary/25 transition-all active:scale-95 flex items-center justify-center gap-2"
+        >
           Add to Cart
+        </button>
+        <button
+          onClick={() => toggleWishlist(product.id)}
+          className={`px-6 rounded-full border border-slate-200 flex items-center justify-center transition-colors ${wishlist.includes(product.id) ? 'bg-red-50 text-red-500 border-red-100' : 'hover:bg-slate-50'}`}
+        >
+          <Heart className={`size-6 ${wishlist.includes(product.id) ? 'fill-current' : ''}`} />
         </button>
       </div>
     </div>

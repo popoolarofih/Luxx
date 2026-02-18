@@ -1,9 +1,12 @@
 'use client';
 
-import { Sparkles, ArrowUpDown, Filter } from 'lucide-react';
+import { Sparkles, Heart, ShoppingBag } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useStore } from '@/context/StoreContext';
+import Link from 'next/link';
 
 export function SearchResults({ query, results }: { query: string, results: any[] }) {
+  const { addToCart, toggleWishlist, wishlist } = useStore();
   return (
     <>
       <section className="max-w-3xl mx-auto text-center mb-20">
@@ -38,21 +41,36 @@ export function SearchResults({ query, results }: { query: string, results: any[
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
-            className="group bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800 hover:-translate-y-2 transition-all duration-300"
+            className="group bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800 hover:-translate-y-2 transition-all duration-300 relative"
           >
             <div className="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+              <Link href={`/product/${p.id}`} className="absolute inset-0 z-0" />
               <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">Product Image</span>
               <div className="absolute top-4 left-4">
                 <span className="bg-primary text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
                   {Math.round((p.similarity || 0.95) * 100)}% Match
                 </span>
               </div>
+              <button
+                onClick={(e) => { e.stopPropagation(); toggleWishlist(p.id); }}
+                className={`absolute top-4 right-4 p-2 rounded-full bg-white/80 backdrop-blur-md text-slate-900 opacity-0 group-hover:opacity-100 transition-opacity z-10 ${wishlist.includes(p.id) ? 'text-red-500 fill-current' : ''}`}
+              >
+                <Heart className="size-4" />
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); addToCart(p); }}
+                className="absolute bottom-4 right-4 bg-primary text-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 z-10 shadow-lg shadow-primary/20"
+              >
+                <ShoppingBag className="size-4" />
+              </button>
             </div>
             <div className="p-6">
-              <div className="flex justify-between items-start mb-2">
-                <h4 className="font-bold text-lg text-slate-900 dark:text-white group-hover:text-primary transition-colors">{p.name}</h4>
-                <span className="font-bold text-slate-900 dark:text-white">${p.price}</span>
-              </div>
+              <Link href={`/product/${p.id}`}>
+                <div className="flex justify-between items-start mb-2">
+                  <h4 className="font-bold text-lg text-slate-900 dark:text-white group-hover:text-primary transition-colors">{p.name}</h4>
+                  <span className="font-bold text-slate-900 dark:text-white">${p.price}</span>
+                </div>
+              </Link>
               <p className="text-slate-500 text-sm mb-4 line-clamp-2">{p.description}</p>
               <div className="bg-primary/5 rounded-lg p-3 flex gap-2 items-start">
                 <Sparkles className="size-4 text-primary mt-0.5 shrink-0" />

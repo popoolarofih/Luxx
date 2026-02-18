@@ -1,6 +1,7 @@
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { TrendingUp, ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
 
 export default function TrendsPage() {
   const trends = [
@@ -31,7 +32,7 @@ export default function TrendsPage() {
               </div>
               <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{trend.description}</p>
               <div className="mt-6 pt-6 border-t border-slate-50 dark:border-slate-800">
-                <button className="text-primary text-sm font-bold hover:underline">Explore Collection</button>
+                <Link href="/explore" className="text-primary text-sm font-bold hover:underline">Explore Collection</Link>
               </div>
             </div>
           ))}

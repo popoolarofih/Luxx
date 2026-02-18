@@ -1,3 +1,5 @@
+'use client';
+
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { User, Mail, ShoppingBag, Ruler, Shield, LayoutDashboard } from 'lucide-react';
@@ -14,7 +16,7 @@ export default function DashboardPage() {
                <User className="size-16 text-slate-400" />
             </div>
             <div className="text-center md:text-left">
-              <h1 className="text-3xl font-bold tracking-tight mb-1">Alex Johnson</h1>
+              <h1 className="text-3xl font-bold tracking-tight mb-1 dark:text-white">Alex Johnson</h1>
               <p className="text-slate-500 dark:text-slate-400 flex items-center justify-center md:justify-start gap-2">
                 <Mail className="size-4" />
                 alex.johnson@example.com
@@ -24,7 +26,10 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-          <button className="flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-full hover:shadow-lg transition-all active:scale-95">
+          <button
+            onClick={() => alert("Profile editing coming soon!")}
+            className="flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-full hover:shadow-lg transition-all active:scale-95"
+          >
             Edit Profile
           </button>
         </section>
@@ -48,14 +53,14 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2 space-y-10">
             <section>
-              <h3 className="text-xl font-bold tracking-tight mb-6">Your AI Preferences</h3>
+              <h3 className="text-xl font-bold tracking-tight mb-6 dark:text-white">Your AI Preferences</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl">
-                   <h4 className="font-bold mb-1">Personalized Styling</h4>
+                   <h4 className="font-bold mb-1 dark:text-white">Personalized Styling</h4>
                    <p className="text-sm text-slate-500">AI-curated looks based on your behavior.</p>
                 </div>
                 <div className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl">
-                   <h4 className="font-bold mb-1">Smart Size Suggest</h4>
+                   <h4 className="font-bold mb-1 dark:text-white">Smart Size Suggest</h4>
                    <p className="text-sm text-slate-500">Automatically select best fit for your profile.</p>
                 </div>
               </div>
@@ -63,7 +68,7 @@ export default function DashboardPage() {
           </div>
           <div className="lg:col-span-1">
              <section className="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-100 dark:border-slate-800">
-               <h3 className="text-xl font-bold mb-4">Recent Activity</h3>
+               <h3 className="text-xl font-bold mb-4 dark:text-white">Recent Activity</h3>
                <p className="text-slate-500 text-sm italic">No recent activity found.</p>
              </section>
           </div>
