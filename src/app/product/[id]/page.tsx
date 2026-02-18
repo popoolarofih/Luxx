@@ -4,6 +4,8 @@ import { getProductDetails } from '@/lib/ai/tools';
 import { ProductInfo } from '@/components/ProductInfo';
 import { AISummary } from '@/components/AISummary';
 
+export const dynamic = 'force-dynamic';
+
 export default async function ProductPage({
   params
 }: {

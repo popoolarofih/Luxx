@@ -3,6 +3,8 @@ import { Footer } from '@/components/Footer';
 import { searchProducts } from '@/lib/ai/tools';
 import { SearchResults } from '@/components/SearchResults';
 
+export const dynamic = 'force-dynamic';
+
 export default async function SearchPage({
   searchParams
 }: {
