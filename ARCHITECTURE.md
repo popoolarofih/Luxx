@@ -7,7 +7,7 @@ graph TD
     Gateway --> Orchestrator[AI Orchestrator - Groq]
     Orchestrator --> Search[Search Service - pgvector]
     Orchestrator --> Recommendation[Recommendation Service]
-    Orchestrator --> Commerce[Commerce Core - Orders/Inventory]
+    Orchestrator --> Commerce[Commerce Core - Orders/Carts]
 
     Search --> DB[(Supabase Postgres)]
     Recommendation --> DB
@@ -16,6 +16,13 @@ graph TD
     Gateway --> Cache{Redis Cache}
     Cache --> DB
 ```
+
+## Database Schema Highlights
+- **Products & Embeddings**: HNSW indexed pgvector for semantic retrieval.
+- **Conversations & Messages**: Persistent chat history with intent metadata.
+- **Carts & Orders**: Grounded commerce core for AI-driven transactions.
+- **AI Events**: Observability for latency, tokens, and confidence scores.
+- **Recommendation Logs**: Tracking of AI-driven decisions and match scores.
 
 ## AI Pipeline
 1. **Intent Extraction**: Groq (Llama 3.3) identifies user goals (search, compare, buy).
@@ -31,7 +38,7 @@ graph TD
 
 ## Failure-Mode Strategy
 - **Fallback**: If Vector search fails, fallback to traditional ILIKE keyword search.
-- **Circuit Breaker**: Redis-based rate limiting prevents LLM token exhaustion.
+- **Rate Limiting**: Redis-based sliding window rate limiting protects the AI Orchestrator from abuse.
 - **Confidence Scoring**: If AI confidence < 0.7, trigger clarifying questions instead of making decisions.
 - **Structured Output Enforcement**: JSON mode ensures valid payloads for tool calls.
 

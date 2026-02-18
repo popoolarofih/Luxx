@@ -52,6 +52,25 @@ create table messages (
   created_at timestamp with time zone default now()
 );
 
+-- Carts
+create table carts (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users on delete cascade,
+  items jsonb default '[]'::jsonb,
+  created_at timestamp with time zone default now(),
+  updated_at timestamp with time zone default now()
+);
+
+-- Recommendation Logs
+create table recommendation_logs (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users on delete cascade,
+  product_id uuid references products(id),
+  score float,
+  reason text,
+  created_at timestamp with time zone default now()
+);
+
 -- Orders
 create table orders (
   id uuid primary key default gen_random_uuid(),
@@ -89,6 +108,8 @@ alter table product_embeddings enable row level security;
 alter table profiles enable row level security;
 alter table conversations enable row level security;
 alter table messages enable row level security;
+alter table carts enable row level security;
+alter table recommendation_logs enable row level security;
 alter table orders enable row level security;
 alter table order_items enable row level security;
 alter table ai_events enable row level security;
@@ -99,7 +120,12 @@ create policy "Users can view their own profiles" on profiles for select using (
 create policy "Users can view their own conversations" on conversations for select using (auth.uid() = user_id);
 create policy "Users can view messages in their conversations" on messages for select
   using (exists (select 1 from conversations where id = messages.conversation_id and user_id = auth.uid()));
+create policy "Users can manage their own carts" on carts for all using (auth.uid() = user_id);
+create policy "Users can view their own recommendation logs" on recommendation_logs for select using (auth.uid() = user_id);
 create policy "Users can view their own orders" on orders for select using (auth.uid() = user_id);
+
+-- Create HNSW index for vector similarity search
+create index on product_embeddings using hnsw (embedding vector_cosine_ops);
 
 -- Vector search function
 create or replace function hybrid_search(

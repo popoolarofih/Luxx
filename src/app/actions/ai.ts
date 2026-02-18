@@ -2,8 +2,21 @@
 
 import { orchestrate } from '@/lib/ai/orchestrator';
 import { searchProducts, getProductDetails, completePurchase } from '@/lib/ai/tools';
+import { rateLimit } from '@/lib/redis/rate-limit';
 
 export async function processChat(userInput: string, history: any[]) {
+  // Rate limiting (max 20 requests per minute)
+  const { success } = await rateLimit('global_chat_limit', 20, 60);
+  if (!success) {
+    return {
+      intent: 'chat' as const,
+      thought: 'Rate limited',
+      response: "Whoa, you're sending requests a bit too fast! Please wait a moment.",
+      confidence_score: 0,
+      toolResults: []
+    };
+  }
+
   try {
     const aiResult = await orchestrate(userInput, history);
 
@@ -30,10 +43,11 @@ export async function processChat(userInput: string, history: any[]) {
   } catch (error) {
     console.error('AI Orchestration error:', error);
     return {
-      intent: 'chat',
+      intent: 'chat' as const,
       thought: 'Error occurred',
       response: "I'm sorry, I'm having trouble processing that right now. Could you try again?",
-      confidence_score: 0
+      confidence_score: 0,
+      toolResults: []
     };
   }
 }
